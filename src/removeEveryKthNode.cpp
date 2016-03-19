@@ -18,6 +18,53 @@ struct node {
 	struct node *next;
 };
 
-struct node * removeEveryKthNode(struct node *head, int K) {
+int ListLength(struct node *temp);
+
+struct node * removeEveryKthNode(struct node *head, int K) 
+{
+	if (K > 1 && head != NULL)
+	{
+		struct node *a;
+		struct node *b;
+		a = head;
+		b = head;
+		int len = ListLength(head);
+		while (b != NULL)
+		{
+			for (int i = 0; i < K; i++)
+			{
+				if (b->next != NULL)
+					b = b->next;
+				if (K - i > 2)
+					a = a->next;
+				else if (b->next == NULL)
+				{
+					b = NULL;
+					break;
+				}
+			}
+			a->next = b;
+			a = b;
+			if (K > len / 2)
+			{
+				break;
+			}
+		}
+		a = head;
+		return a;
+	}
 	return NULL;
+}
+
+int ListLength(struct node *head)
+{
+	int length = 0;
+	struct node *temp;
+	temp = head;
+	while (temp != NULL)
+	{
+		length ++;
+		temp = temp->next;
+	}
+	return length;
 }
