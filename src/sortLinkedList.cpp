@@ -18,6 +18,68 @@ struct node {
 	struct node *next;
 };
 
-struct node * sortLinkedList(struct node *head) {
+struct node * SortandMerged(struct node *a, struct node *b);
+void Sort(struct node **head);
+
+struct node * sortLinkedList(struct node *head) 
+{
+	if (head != NULL)
+	{
+		Sort(&head);
+		return head;
+	}
 	return NULL;
+}
+
+void Sort(struct node **head)
+{
+	struct node *head_ptr = *head;
+	struct node *a;
+	struct node *b;
+
+	if (head_ptr->next == NULL)
+		return;
+
+	a = head_ptr;
+	b = head_ptr->next;
+	while (b != NULL)
+	{
+		b = b->next;
+		if (b != NULL)
+		{
+			a = a->next;
+			b = b->next;
+		}
+	}
+	b = a->next;
+	a->next = NULL;
+	a = head_ptr;
+
+	Sort(&a);
+	Sort(&b);
+	*head = SortandMerged(a, b);
+}
+
+struct node * SortandMerged(struct node *a, struct node *b)
+{
+	struct node *finalMergedList = NULL;
+	if (a == NULL)
+	{
+		return b;
+	}
+	else if (b == NULL)
+	{
+		return a;
+	}
+	if (a->num <= b->num)
+	{
+		finalMergedList = a;
+		finalMergedList->next = SortandMerged(a->next, b);
+	}
+	else
+	{
+		finalMergedList = b;
+		finalMergedList->next = SortandMerged(a, b->next);
+	}
+	return finalMergedList;
 }
